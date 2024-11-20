@@ -1,8 +1,8 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import express from "express";
+import express, { Request } from "express";
 import mongoose from "mongoose";
-import { User } from "./db";
+import { Content, User } from "./db";
 const app = express();
 const port = 3000;
 import jwt from "jsonwebtoken";
@@ -38,7 +38,7 @@ app.post("/signup", async (req, res) => {
             msg : "Successfully signed-up"
         })
     }catch(e) {
-        res.status(403).json({
+        res.status(411).json({
             msg : "User already exists with this username"
         })
     }
@@ -54,7 +54,7 @@ app.post("/signin", async (req, res) => {
         const user = await bcrypt.compare(password, foundUser.password);
         if(user) {
             const token = jwt.sign({
-                id : foundUser._id.toString()
+                id : foundUser._id
             }, JWT_SECRET);
             res.status(200).json({
                 msg : "You are successfully signed-in",
@@ -72,9 +72,35 @@ app.post("/signin", async (req, res) => {
     }
 })
 
-app.get("/auth", auth, (req, res) => {
-    res.json({
-        msg : "You are authenticated"
+interface CustomRequest extends Request {
+    userId ?: string
+}
+
+
+app.post("/content", auth, async(req, res) => {
+    const link = req.body.link;
+    const type = req.body.type;
+    const title = req.body.title;
+    const userId = (req as CustomRequest).userId;
+    await Content.create({
+        link,
+        type,
+        title,
+        tags : [],
+        userId
+    });
+    res.status(200).json({
+        msg : "Content added"
+    })
+});
+
+app.get("/content", auth, async(req, res) => {
+    const userId = (req as CustomRequest).userId;
+    const contents = await Content.find({
+        userId
+    }).populate('userId', 'username');
+    res.status(200).json({
+        contents
     })
 })
 

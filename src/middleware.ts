@@ -1,9 +1,21 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
-// console.log(process.env.JWT_SECRET);
+const JWT_SECRET = process.env.JWT_SECRET as string;
 
-export const auth = (req : Request, res : Response , next : NextFunction ) => {
+interface CustomRequest extends Request{
+    userId ?: string
+}
+
+export const auth = (req : CustomRequest, res : Response , next : NextFunction ) => {
     const token = req.headers.token;
-    next();
+    const decoded = jwt.verify(token as string, JWT_SECRET);
+    if(decoded) {
+        req.userId = (decoded as JwtPayload).id as string;
+        next();
+    }else{
+        res.status(403).json({
+            msg : "You are not logged-in"
+        })
+    }
 }
