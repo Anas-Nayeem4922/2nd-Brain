@@ -77,7 +77,7 @@ interface CustomRequest extends Request {
 }
 
 
-app.post("/content", auth, async(req, res) => {
+app.post("/content", auth, async(req, res) => { // Create route
     const link = req.body.link;
     const type = req.body.type;
     const title = req.body.title;
@@ -94,7 +94,7 @@ app.post("/content", auth, async(req, res) => {
     })
 });
 
-app.get("/content", auth, async(req, res) => {
+app.get("/content", auth, async(req, res) => { // Read route
     const userId = (req as CustomRequest).userId;
     const contents = await Content.find({
         userId
@@ -102,6 +102,59 @@ app.get("/content", auth, async(req, res) => {
     res.status(200).json({
         contents
     })
+});
+
+app.put("/content/:id", auth, async(req, res) => { // Update Route
+    const contentId = req.params.id;
+    const userId = (req as CustomRequest).userId;
+    try{
+        const content = await Content.findById(contentId);
+        if(content) {
+            if(userId == content.userId) {
+                await Content.findByIdAndUpdate(contentId, req.body);
+                res.json({
+                    msg : "Content updated successfully"
+                })
+            }else{
+                res.json({
+                    msg : "You don't have access to this"
+                })
+            }
+        }
+    }
+    catch(e){
+        res.json({
+            msg : "Invalid content id"
+        })
+    }
+});
+
+app.delete("/content/:id", auth, async(req, res) => { // Delete Route
+    const contentId = req.params.id;
+    const userId = (req as CustomRequest).userId;
+    try{
+        const content = await Content.findById(contentId);
+        if(content) {
+            if(content.userId == userId) {
+                await Content.deleteOne({
+                    _id : contentId
+                });
+                res.json({
+                    msg : "Content deleted successfully"
+                })
+            }else{
+                res.json({
+                    msg : "You don't have access to this"
+                })
+            }
+        }
+        
+    }
+    catch(e) {
+        res.json({
+            msg : "Incorrect content id"
+        })
+    }
 })
 
 app.get("/", (req, res) => {
