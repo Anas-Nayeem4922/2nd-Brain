@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import express, { Request } from "express";
+import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import { Content, Link, User } from "./db";
 const app = express();
@@ -74,7 +74,7 @@ app.post("/signin", async (req, res) => {
 })
 
 
-app.post("/content", auth, async(req, res) => { // Create route
+app.post("/content", auth, async(req : Request, res : Response) => { // Create route
     const link = req.body.link;
     const type = req.body.type;
     const title = req.body.title;
@@ -91,7 +91,8 @@ app.post("/content", auth, async(req, res) => { // Create route
     })
 });
 
-app.get("/content", auth, async(req, res) => { // Read route
+app.get("/content", auth, async(req : Request, res) => { // Read route
+    //@ts-ignore
     const userId = req.userId;
     const contents = await Content.find({
         userId
@@ -101,8 +102,9 @@ app.get("/content", auth, async(req, res) => { // Read route
     })
 });
 
-app.put("/content/:id", auth, async(req, res) => { // Update Route
+app.put("/content/:id", auth, async(req : Request, res) => { // Update Route
     const contentId = req.params.id;
+    //@ts-ignore
     const userId = req.userId;
     try{
         const content = await Content.findById(contentId);
@@ -126,8 +128,9 @@ app.put("/content/:id", auth, async(req, res) => { // Update Route
     }
 });
 
-app.delete("/content/:id", auth, async(req, res) => { // Delete Route
+app.delete("/content/:id", auth, async(req : Request, res) => { // Delete Route
     const contentId = req.params.id;
+    //@ts-ignore
     const userId = req.userId;
     try{
         const content = await Content.findById(contentId);
@@ -154,15 +157,17 @@ app.delete("/content/:id", auth, async(req, res) => { // Delete Route
     }
 });
 
-app.post("/share", auth, async(req, res) => {
+app.post("/share", auth, async(req : Request, res) => {
     const share = req.body.share;
     if(share) {
         await Link.create({
             hash : random(10),
+            //@ts-ignore
             userId : req.userId,
         })
     }else{
         await Link.deleteOne({
+            //@ts-ignore
             userId : req.userId
         })
     }
