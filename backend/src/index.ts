@@ -13,6 +13,10 @@ import { random } from './utils';
 const JWT_SECRET = process.env.JWT_SECRET as string;
 const MONGO_URL = process.env.MONGO_URL as string;
 
+interface RequestWithUserId extends Request {
+    userId ?: string;
+}
+
 app.use(express.json());
 
 main()
@@ -73,8 +77,7 @@ app.post("/signin", async (req, res) => {
     }
 })
 
-
-app.post("/content", auth, async(req : Request, res : Response) => { // Create route
+app.post("/content", auth, async (req: RequestWithUserId, res: Response) => { // Create route
     const link = req.body.link;
     const type = req.body.type;
     const title = req.body.title;
@@ -91,8 +94,7 @@ app.post("/content", auth, async(req : Request, res : Response) => { // Create r
     })
 });
 
-app.get("/content", auth, async(req : Request, res) => { // Read route
-    //@ts-ignore
+app.get("/content", auth, async(req : RequestWithUserId, res) => { // Read route
     const userId = req.userId;
     const contents = await Content.find({
         userId
@@ -102,9 +104,9 @@ app.get("/content", auth, async(req : Request, res) => { // Read route
     })
 });
 
-app.put("/content/:id", auth, async(req : Request, res) => { // Update Route
+app.put("/content/:id", auth, async(req : RequestWithUserId, res) => { // Update Route
     const contentId = req.params.id;
-    //@ts-ignore
+    
     const userId = req.userId;
     try{
         const content = await Content.findById(contentId);
@@ -128,9 +130,9 @@ app.put("/content/:id", auth, async(req : Request, res) => { // Update Route
     }
 });
 
-app.delete("/content/:id", auth, async(req : Request, res) => { // Delete Route
+app.delete("/content/:id", auth, async(req : RequestWithUserId, res) => { // Delete Route
     const contentId = req.params.id;
-    //@ts-ignore
+    
     const userId = req.userId;
     try{
         const content = await Content.findById(contentId);
@@ -157,17 +159,15 @@ app.delete("/content/:id", auth, async(req : Request, res) => { // Delete Route
     }
 });
 
-app.post("/share", auth, async(req : Request, res) => {
+app.post("/share", auth, async(req : RequestWithUserId, res) => {
     const share = req.body.share;
     if(share) {
         await Link.create({
             hash : random(10),
-            //@ts-ignore
             userId : req.userId,
         })
     }else{
         await Link.deleteOne({
-            //@ts-ignore
             userId : req.userId
         })
     }
