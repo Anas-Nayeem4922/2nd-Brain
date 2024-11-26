@@ -1,3 +1,4 @@
+import { DeleteIcon } from '../icons/Delete'
 import { ShareIcon } from '../icons/Share'
 
 interface CardProps {
@@ -14,9 +15,9 @@ const Card = ({title, link, type} : CardProps) => {
                     <div className='text-gray-500 cursor-pointer'><ShareIcon/></div>
                     <h1 className='ml-2 text-md'>{title}</h1>
                 </div>
-                <div className='flex items-center'>
-                    <div className='pr-2 cursor-pointer'><ShareIcon/></div>
-                    <div className='cursor-pointer'><ShareIcon/></div>
+                <div className='flex items-center text-gray-400'>
+                    <div className='pr-4 cursor-pointer'><ShareIcon/></div>
+                    <div className='cursor-pointer'><DeleteIcon/></div>
                 </div>
             </div>
             <div className='mt-4'>
