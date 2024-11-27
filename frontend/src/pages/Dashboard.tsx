@@ -5,9 +5,11 @@ import Modal from "../components/Modal"
 import { PlusIcon } from "../icons/Plus"
 import { ShareIcon } from "../icons/Share"
 import SideBar from "../components/SideBar"
+import { useContent } from "../hooks/useContent"
 
 function DashBoard() {
     const [modalOpen, setModalOpen] = useState(false);
+    const contents = useContent();
     return (
         <>
         <Modal open={modalOpen} onClose={setModalOpen}></Modal>
@@ -27,8 +29,10 @@ function DashBoard() {
             </div>
             
             <div className="flex gap-6">
-            <Card type="twitter" link="https://x.com/anas_nayeem6205/status/1846478731834994784" title="ALLEN"></Card>
-            <Card type="youtube" link="https://www.youtube.com/watch?v=cvla0I-8EYQ" title="IPL AUCTION"></Card>
+                {JSON.stringify(contents)}
+                {contents.map(({link, type, title}) => {
+                    return <Card link={link} title={title} type={type}/>
+                })}
             </div>      
         </div>
         

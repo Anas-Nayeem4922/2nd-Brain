@@ -5,7 +5,8 @@ interface ButtonProps {
     text : string,
     startIcon ?: ReactElement,
     onClick ?: () => void,
-    loading ?: boolean
+    loading ?: boolean,
+    fullWidth ?: boolean
 }
 
 const variantClasses = {
@@ -15,9 +16,9 @@ const variantClasses = {
 
 const defaultStyles = "px-4 py-2 rounded-md font-light flex items-center"
 
-const Button = ({variant, text, startIcon, onClick, loading} : ButtonProps) => {
+const Button = ({variant, text, startIcon, onClick, loading, fullWidth} : ButtonProps) => {
     return (
-        <button onClick={onClick} className={`${variantClasses[variant]} ${defaultStyles} ${loading ? `cursor-wait opacity-80` : `cursor-pointer`}`}>
+        <button onClick={onClick} className={`${variantClasses[variant]} ${defaultStyles} ${loading ? `cursor-wait opacity-80` : `cursor-pointer`} ${fullWidth ? `px-12` : `px-4`}`}>
             <div className='pr-2'>{startIcon}</div>
             {text}
         </button>

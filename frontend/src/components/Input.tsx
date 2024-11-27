@@ -1,8 +1,8 @@
 
-const Input = ({placeholder, type, onChange} : {placeholder : string, type : string, onChange ?: () => void}) => {
+const Input = ({placeholder, type, inputRef} : {placeholder : string, type : string, inputRef ?: any}) => {
     return (
         <div>
-            <input type={type} className="px-4 py-2 border rounded-md my-2" onChange={onChange} placeholder={placeholder}/>
+            <input type={type} className="px-4 py-2 border rounded-md my-2" placeholder={placeholder} ref={inputRef}/>
         </div>
     )
 }

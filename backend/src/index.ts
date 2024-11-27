@@ -9,6 +9,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { auth } from "./middleware";
 import { random } from './utils';
+import cors from "cors"
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 const MONGO_URL = process.env.MONGO_URL as string;
@@ -18,6 +19,7 @@ interface RequestWithUserId extends Request {
 }
 
 app.use(express.json());
+app.use(cors());
 
 main()
     .then(() => console.log("Connected to DB"))
