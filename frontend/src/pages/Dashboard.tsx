@@ -9,7 +9,7 @@ import { useContent } from "../hooks/useContent"
 
 function DashBoard() {
     const [modalOpen, setModalOpen] = useState(false);
-    const contents = useContent();
+    const contents = useContent(modalOpen);
     return (
         <>
         <Modal open={modalOpen} onClose={setModalOpen}></Modal>

@@ -27,7 +27,8 @@ const Card = ({title, link, type, contentId} : CardProps) => {
             headers : {
                 "token" : localStorage.getItem("token")
             }
-        })
+        });
+        
     }
     return (
         <div className='p-8 bg-white rounded-md shadow-md outline-slate-100 max-w-80 border h-96 overflow-y-scroll '>

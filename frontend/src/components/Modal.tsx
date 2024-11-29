@@ -32,7 +32,7 @@ const Modal = ({open, onClose} : {open : boolean, onClose : (x : boolean) => voi
                 "token" : localStorage.getItem("token")
             }
         });
-        alert("Content added");
+        close();
     }
     return (
         <> 
