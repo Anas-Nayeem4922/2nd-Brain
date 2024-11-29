@@ -33,6 +33,7 @@ const Modal = ({open, onClose} : {open : boolean, onClose : (x : boolean) => voi
             }
         });
         close();
+        window.location.reload();
     }
     return (
         <> 

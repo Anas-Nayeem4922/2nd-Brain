@@ -29,8 +29,8 @@ function DashBoard() {
             <div className="gap-6 flex flex-wrap mt-6">
                 {contents.map(({ link, type, title, _id }) => {
                     return (
-                        <div className="break-inside-avoid">
-                            <Card link={link} title={title} type={type} contentId={_id} />
+                        <div>
+                            <Card  link={link} title={title} type={type} contentId={_id} />
                         </div>
                     );
                 })}
