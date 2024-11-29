@@ -2,12 +2,23 @@ import axios from 'axios'
 import { DeleteIcon } from '../icons/Delete'
 import { ShareIcon } from '../icons/Share'
 import { BACKEND_URL } from '../config'
+import { ArticleIcon } from '../icons/Article'
+import { VideoIcon } from '../icons/Video'
+import { ImageIcon } from '../icons/Image'
+import { AudioIcon } from '../icons/Audio'
 
 interface CardProps {
     title : string,
     link : string,
     type : "video" | "article",
     contentId : string
+}
+
+const iconClasses = {
+    "article" : <ArticleIcon/>,
+    "video" : <VideoIcon/>,
+    "image" : <ImageIcon/>,
+    "audio" : <AudioIcon/>
 }
 
 const Card = ({title, link, type, contentId} : CardProps) => {
@@ -22,7 +33,7 @@ const Card = ({title, link, type, contentId} : CardProps) => {
         <div className='p-8 bg-white rounded-md shadow-md outline-slate-100 max-w-80 border h-96 overflow-y-scroll '>
             <div className='flex justify-between items-center'>
                 <div className='flex items-center'>
-                    <div className='text-gray-500 cursor-pointer'><ShareIcon/></div>
+                    <div className='text-gray-500 cursor-pointer'>{iconClasses[type]}</div>
                     <h1 className='ml-2 font-semibold'>{title}</h1>
                 </div>
                 <div className='flex items-center text-gray-400'>
