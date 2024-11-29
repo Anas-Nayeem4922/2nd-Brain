@@ -36,13 +36,17 @@ app.post("/signup", async (req, res) => {
     const password : string = req.body.password;
     const hashedPassword = await bcrypt.hash(password, 3);
     try { 
-        await User.create({
+        let user = await User.create({
             username,
             email,
             password : hashedPassword
-        })
+        });
+        const token = jwt.sign({
+            id : user._id,
+        }, JWT_SECRET);
         res.status(200).json({
-            msg : "Successfully signed-up"
+            msg : "Successfully signed-up",
+            token
         })
     }catch(e) {
         res.status(411).json({
@@ -179,11 +183,6 @@ app.get("/share/:shareLink", async(req, res) => {
 
 })
 
-app.get("/", (req, res) => {
-    res.json({
-        msg : "Home route"
-    })
-})
 
 app.listen(port, () => {
     console.log(`App is listening on port ${port}`);

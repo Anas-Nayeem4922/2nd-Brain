@@ -1,8 +1,9 @@
 
-const Input = ({placeholder, type, inputRef} : {placeholder : string, type : string, inputRef ?: any}) => {
+const Input = ({placeholder, type, inputRef, label} : {placeholder : string, type : string, inputRef ?: any, label ?: string}) => {
     return (
-        <div>
-            <input type={type} className="px-4 py-2 border rounded-md my-2" placeholder={placeholder} ref={inputRef}/>
+        <div className="flex flex-col">
+            <label className="mt-6">{label}</label>
+            <input type={type} className="px-4 py-2 border rounded-md my-2 min-w-80" placeholder={placeholder} ref={inputRef}/>
         </div>
     )
 }
